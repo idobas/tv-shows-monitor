@@ -1,4 +1,4 @@
-const imdb = require('imdb-api');
+import * as imdb from 'imdb-api';
 export const FETCH_SHOW_DATA = 'FETCH_SHOW_DATA';
 
 export function fetchShowData(showName) {
