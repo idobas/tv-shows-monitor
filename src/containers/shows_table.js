@@ -19,13 +19,9 @@ class ShowsTable extends Component {
         <td><span>{year}</span></td>
         <td>
           <span>{lastEpisode}</span>
-          <button
-            className='btn btn-primary'
-            >
-            <a href={magnetLink}>
+          <a className='btn btn-primary' href={magnetLink}>
             Download latest episode
-            </a>
-          </button>
+          </a>
         </td>
       </tr>
     );
