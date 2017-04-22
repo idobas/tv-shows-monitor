@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 class ShowsTable extends Component {
-  onEpisodeDownloadLink(season, episode, event) {
-    
-  }
 
   renderShows(showInfo) {
-    const {poster, plot, year} = showInfo;
+    const {poster, plot, year, magnetLink} = showInfo;
     const filteredEpisodeList = showInfo.episodesList.filter(episode => {
       return episode.released.toString() !== 'Invalid Date' && episode.released <= new Date();
     });
@@ -16,7 +13,7 @@ class ShowsTable extends Component {
     const lastEpisode = `Season ${season}, Episode ${episode}`;
 
     return (
-      <tr>
+      <tr key={plot}>
         <td><img src={poster}/></td>
         <td><p>{plot}</p></td>
         <td><span>{year}</span></td>
@@ -24,8 +21,10 @@ class ShowsTable extends Component {
           <span>{lastEpisode}</span>
           <button
             className='btn btn-primary'
-            onClick={this.onEpisodeDownloadLink.bind(this, season, episode)}>
+            >
+            <a href={magnetLink}>
             Download latest episode
+            </a>
           </button>
         </td>
       </tr>

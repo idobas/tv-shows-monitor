@@ -22,7 +22,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
+    contentBase: './',
+    headers: { 'Access-Control-Allow-Origin': '*'}
   },
   node: {
     console: true,
