@@ -20,7 +20,7 @@ class ShowsTable extends Component {
         <td>
           <span>{lastEpisode}</span>
           <a className='btn btn-primary' href={magnetLink}>
-            Download latest episode
+            Download episode
           </a>
         </td>
       </tr>
