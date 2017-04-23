@@ -31,7 +31,9 @@ function createFetchLastEpisodeRequest(showName) {
       data.episodesList = episodes;
 
       return searchPirata(searchTerm).then(res => {
-        data.magnetLink = res[0].magnet;
+        if (res.length >= 1) {
+          data.magnetLink = res[0].magnet;
+        }
         return data;
       }).catch(err => console.log(err));
     });
