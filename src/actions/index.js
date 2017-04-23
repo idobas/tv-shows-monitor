@@ -1,8 +1,6 @@
 import * as imdb from 'imdb-api';
 import * as pirata from 'pirata';
-import PirateBay from 'thepiratebay';
-const TPB = require('tpb-api');
-const tpb = new TPB();
+
 export const FETCH_SHOW_DATA = 'FETCH_SHOW_DATA';
 
 function searchPirata(searchTerm) {
