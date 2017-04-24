@@ -1,8 +1,24 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+//import CustomEpisodeModal from './custom_episode_modal';
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 
 class ShowsTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowingModal: false
+    }
+  }
+
+  handleClose() {this.setState({isShowingModal: false});}
+
+  openModal(event){
+    this.setState({
+      isShowingModal: true
+    });
+  }
 
   renderShows(showInfo) {
     const {poster, plot, year, magnetLink} = showInfo;
@@ -22,6 +38,9 @@ class ShowsTable extends Component {
           <a className='btn btn-primary' href={magnetLink}>
             Download episode
           </a>
+          <a onClick={this.openModal.bind(this)}>
+            Or choose a custom episode to download
+          </a>
         </td>
       </tr>
     );
@@ -40,6 +59,17 @@ class ShowsTable extends Component {
         </thead>
         <tbody>
           {this.props.showsInfo.map(this.renderShows.bind(this))}
+          <tr>
+            {
+              this.state.isShowingModal &&
+              <ModalContainer onClose={this.handleClose.bind(this)}>
+                <ModalDialog onClose={this.handleClose.bind(this)}>
+                  <h1>Dialog Content</h1>
+                  <p>More Content. Anything goes here</p>
+                </ModalDialog>
+              </ModalContainer>
+            }
+          </tr>
         </tbody>
       </table>
     );
