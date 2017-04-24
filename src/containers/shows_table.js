@@ -38,8 +38,9 @@ class ShowsTable extends Component {
           <a className='btn btn-primary' href={magnetLink}>
             Download episode
           </a>
+          <div>Or</div>
           <a onClick={this.openModal.bind(this)}>
-            Or choose a custom episode to download
+            Choose a custom episode to download...
           </a>
         </td>
       </tr>
