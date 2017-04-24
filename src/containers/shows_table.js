@@ -1,27 +1,28 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
-//import CustomEpisodeModal from './custom_episode_modal';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import CustomEpisodeForm from './custom_episode_form';
 
 class ShowsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isShowingModal: false
+      isShowingModal: false,
+      currentShow: ''
     }
   }
 
   handleClose() {this.setState({isShowingModal: false});}
 
-  openModal(event){
+  openModal(title, event) {
     this.setState({
-      isShowingModal: true
+      isShowingModal: true,
+      currentShow: title
     });
   }
 
   renderShows(showInfo) {
-    const {poster, plot, year, magnetLink} = showInfo;
+    const {poster, plot, year, magnetLink, title} = showInfo;
     const filteredEpisodeList = showInfo.episodesList.filter(episode => {
       return episode.released.toString() !== 'Invalid Date' && episode.released <= new Date();
     });
@@ -35,11 +36,11 @@ class ShowsTable extends Component {
         <td><span>{year}</span></td>
         <td>
           <span>{lastEpisode}</span>
-          <a className='btn btn-primary' href={magnetLink}>
+          <a className='btn btn-primary download-button' href={magnetLink}>
             Download episode
           </a>
           <div>Or</div>
-          <a onClick={this.openModal.bind(this)}>
+          <a onClick={this.openModal.bind(this, title)}>
             Choose a custom episode to download...
           </a>
         </td>
@@ -65,8 +66,8 @@ class ShowsTable extends Component {
               this.state.isShowingModal &&
               <ModalContainer onClose={this.handleClose.bind(this)}>
                 <ModalDialog onClose={this.handleClose.bind(this)}>
-                  <h1>Dialog Content</h1>
-                  <p>More Content. Anything goes here</p>
+                  <CustomEpisodeForm showName={this.state.currentShow}/>
+                  {this.props.magnet ? <a href={this.props.magnet}>Click here to download</a> : null}
                 </ModalDialog>
               </ModalContainer>
             }
@@ -79,7 +80,8 @@ class ShowsTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    showsInfo: state.showsInfo
+    showsInfo: state.showsInfo.shows,
+    magnet: state.showsInfo.magnet
   }
 }
 

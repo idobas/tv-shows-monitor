@@ -5,3 +5,12 @@
 a:hover {
  cursor:pointer;
 }
+
+.download-button {
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.custom-download-button {
+  margin-bottom: 6px;
+}
