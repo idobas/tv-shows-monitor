@@ -10,5 +10,8 @@ export const suggestions = [
   },
   {
     showName: 'pretty little liars'
+  },
+  {
+    showName: 'silicon valley'
   }
 ];
