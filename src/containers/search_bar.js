@@ -2,39 +2,80 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {fetchShowData} from '../actions/index';
+import {suggestions} from '../utils/utils';
+import Autosuggest from 'react-autosuggest';
+
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0 ? [] : suggestions.filter(suggestion =>
+    suggestion.showName.toLowerCase().slice(0, inputLength) === inputValue
+  );
+};
+
+const getSuggestionValue = suggestion => suggestion.showName;
+
+const renderSuggestion = suggestion => (
+  <span>{suggestion.showName}</span>
+);
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: ''
+      value: '',
+      suggestions: []
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  onInputChange(event) {
+  onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      term: event.target.value
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  onInputChange(event, { newValue, method }) {
+    this.setState({
+      value: newValue
     });
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.fetchShowData(this.state.term);
+    this.props.fetchShowData(this.state.value);
     this.setState({
-      term: ''
+      value: ''
     });
   }
 
   render() {
+    const { value, suggestions } = this.state;
+
+    // Autosuggest will pass through all these props to the input element.
+    const inputProps = {
+      placeholder: 'Type a TV show you like',
+      value: value,
+      onChange: this.onInputChange
+    };
+
     return (
       <form onSubmit={this.onFormSubmit} className="input-group">
-        <input
-            placeholder="Type a TV show you like"
-            className="form-control"
-            value={this.state.term}
-            onChange={this.onInputChange}
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(this)}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(this)}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
         />
         <span className="input-group-btn">
           <button type="submit" className="btn btn-secondary">Submit</button>
